@@ -1,0 +1,480 @@
+<html>
+
+<head>
+<style>
+p {
+  color:#113355;
+  font-style:normal;
+  font-size:14px;
+} 
+
+ul {
+  color:#113355;
+  font-style:normal;
+  font-size:14px;
+} 
+
+h1 {
+  color:#113355;
+  font-style:normal;
+  font-size:22px;
+  text-align:center;
+} 
+
+h2 {
+  color:#113355;
+  font-style:normal;
+  font-size:18px;
+  text-align:center;
+} 
+h3 {
+  color:#113355;
+  font-style:normal;
+  font-size:16px;
+  text-align:center;
+} 
+
+tr
+{
+background-color: #ddeeff
+}
+tr:nth-child(even) {
+    background-color: #bbddff;
+}
+table {border: none;  color:#113355;
+  font-style:normal;
+  font-size:14px;
+}
+th,td
+{
+padding:12px;
+}
+a:link {color:#0000FF;}      /* unvisited link */
+a:visited {color:#0055FF;}  /* visited link */
+a:hover {color:#00AAFF;}  /* mouse over link */
+a:active {color:#00FFFF;}  /* selected link */
+
+</style>
+</head>
+
+<body>
+<h1>Matlab Audio Analysis Library</h1>
+
+
+<table>
+
+<tr>
+<td bgcolor="#ffffff" valign="top" >
+<a href="http://store.elsevier.com/Introduction-to-Audio-Analysis/Theodoros-Giannakopoulos/isbn-9780080993881/" target="_blank"><p align = "center"><img src="bookCover.jpg" width="200"></img></a></p>
+<br> (C) 2014
+<br> <a href = "http://www.di.uoa.gr/~tyiannak" target="_blank"> Theodoros Giannakopoulos </a>
+<br> <a href = "http://www.cs.unipi.gr/pikrakis" target="_blank"> Aggelos Pikrakis </a>
+</td>
+
+<td bgcolor="#ffffff">
+	<p>The current document is an outline of the Matlab Audio Analysis Library which accompanies the book <a href="http://store.elsevier.com/Introduction-to-Audio-Analysis/Theodoros-Giannakopoulos/isbn-9780080993881/" target="_blank">Introduction to Audio Analysis:A MATLAB&#174 Approach, 1st Edition</a>. 
+	<p>The provided material is organized as follows::
+	 
+	<ul>
+	<li>Folder "library"</li>
+		<ul>
+		<li>In the root of this folder you can find:
+			<ul>
+			<li> the <b>core m-files</b> of the Matlab Audio Analysis Library</li>
+			<li> a number of <b>mat files</b></li>
+			</ul>
+		<li>Folder "demos" contains m-files used for demonstrating particular functionalities of the library. Most of these demos are presented in the book. Note, that, in order to run the demos, one has to add the root path (i.e. the path of the "library" folder) in the MATLAB path.</li>
+		</ul>
+
+	<li>Folder "data" contains basic audio data that have been used to evaluate and train several algorithms described in the book. </li>
+	</ul>
+
+	<h2>Contents of "/data"</h2>
+	<table align="center" style="width:85%" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td bgcolor="#66aaff"><b>Name</td>
+	  <td bgcolor="#66aaff"><b>Description</td> 
+	</tr>
+	<tr>
+	  <td>Clarinet</td>
+	  <td> This folder contains pitch-tracking sequences (WindInstrumentPitch.mat file) that have been extracted from a set of monophonic recordings of a wind instrument,the clarinet. The recordings are variations of two melodies (patterns) and are organized into two sets (folders Pattern_1 and Pattern_2, respectively) .</td> 
+	</tr>
+	<tr>
+	  <td>1WORD.wav, 3WORDS.wav</td>
+	  <td>Speech examples that can be used in silence detection or speech filtering (Chapter 6)</td> 
+	</tr>
+	<tr>
+	  <td>4ClassStream.wav, 4ClassStreamGT.mat</td>
+	  <td>4-class (female speech, male speech, silence and music) example to be used for supervised segmentation methods (Chapter 6). The mat file contains the respective ground truth.</td> 
+	</tr>
+	<tr>
+	  <td>BassClarinet_model1.mat, frequency.txt</td>
+	  <td>A small sample of a bass clarinet sound. The text file contains the ground truth frequencies of the respective sound (used to demonstrate fundumental frequency estimation in demo "demoFo()")</td> 
+	</tr>
+	<tr>
+	  <td>diarizationExample.wav</td>
+	  <td>Audio example for speaker diarization (Chapter 6).</td> 
+	</tr>
+	<tr>
+	  <td>DubaiAirport.wav, KingGeorgeSpeech_1939_53sec.wav, KingGeorgeSpeech_1939_small.wav</td>
+	  <td>Three general purpose speech fiules (used for silence detection, segmentation, filtering and so on).</td> 
+	</tr>
+	<tr>
+	  <td>musicLargeData.mat, musicSmallData.mat</td>
+	  <td>Two datasets of mid-term features extracted from 300 and 40 music tracks respectively. Used for music visualization tasks (Chapter 8)</td> 
+	</tr>
+	<tr>
+	  <td>speech_music_sample.wav</td>
+	  <td>An audio stream of speech and music segments. Used for speech-music segmentation methods (Chapter 6)</td> 
+	</tr>
+	<tr>
+	  <td>topGear.wav, topGearGT.mat</td>
+	  <td>An audio stream from a TV show with respective ground-truth. Used by signal change detection methods (Chapter 6)</td> 
+	</tr>
+
+	</table>
+
+	<h2>Contents of "/library"</h2>
+	<p>In the following table we provide a short description of the core Matlab functions of the library, i.e the functions stored in the "library" folder (<b>not</b> the ones stored in the "demos" folder). <br><i>For a description of the five (5) .mat files (i.e the kNN models of the respective classification tasks), please refer to Table 5.1 of the book.</i>
+	<table align="center" style="width:85%" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td bgcolor="#66aaff"><b>m-file</td>
+	  <td bgcolor="#66aaff"><b>Description</td> 
+	  <td bgcolor="#66aaff"><b>Chapter</td>
+	</tr>
+	<tr>
+	  <td>audioRecorderOnline</td>
+	  <td>Demonstrates the audio recording using the audiorecorder() MATLAB function. Calls the audioRecorderTimerCallback() callback function.</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>audioRecorderTimerCallback</td>
+	  <td>Callback function used to record audio data (through the audiorecorder() MATLAB function)</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>classifyKNN_D_Multi</td>
+	  <td>Classifies an unknown sample using the kNN algorithm, in its multi-class mode. Returns probability estimates</td> 
+	  <td>5, 6</td>
+	</tr>
+	<tr>
+	  <td>computePerformanceMeasures</td>
+	  <td>Computes the confusion matrix and performance measures of a classification process</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>dctCompress</td>
+	  <td>Demonstrates the use of DCT for audio compressing</td> 
+	  <td>3</td>
+	</tr>
+	<tr>
+	  <td>dctDecompress</td>
+	  <td>Demonstrates the use of DCT for audio (de)compressing</td> 
+	  <td>3</td>
+	</tr>
+	<tr>
+	  <td>dynamicTimeWarpingItakura</td>
+	  <td>Computes the Dynamic Time Warping cost between two feature sequences based on the Itakura local path constraints</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>dynamicTimeWarpingSakoeChiba</td>
+	  <td>Computes the Dynamic Time Warping cost between two feature sequences based on the Sakoe-Chiba local path constraints</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>em_alg_function</td>
+	  <td>EM algorithm for estimating the parameters of a mixture of normal distributions, with diagonal covariance matrices</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>EM_pdf_est</td>
+	  <td>EM estimation of the pdfs of c classes</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>evaluateClassifier</td>
+	  <td>Implements the repeated hold out and leave-one-out validation methods</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>feature_chroma_vector</td>
+	  <td>Computes the chroma vector of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_energy</td>
+	  <td>Computes the energy of a shortterm window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_energy_entropy</td>
+	  <td>Computes the entropy of energy of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>featureExtractionDir</td>
+	  <td>Extracts mid-term features for a list of WAV files stored in a given folder</td> 
+	  <td>8</td>
+	</tr>
+	<tr>
+	  <td>featureExtractionFile</td>
+	  <td>Reads a WAVE file and computes audio feature statistics on a mid-term basis</td> 
+	  <td>4,5,6</td>
+	</tr>
+	<tr>
+	  <td>feature_harmonic</td>
+	  <td>Computes the harmonic ratio and fundamental frequency of a window (autocorrelation method)</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_mfccs</td>
+	  <td>Computes the MFCCs of a short-term window (Based on Slaney'sAuditory Toolbox)</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_mfccs_init</td>
+	  <td>Initializes the computation of the MFCCs (see feature mfccs())</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_spectral_centroid</td>
+	  <td>Computes the spectral centroid of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_spectral_entropy</td>
+	  <td>Computes the spectral entropy of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_spectral_flux</td>
+	  <td>Computes the spectral flux of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_spectral_rolloff</td>
+	  <td>Computes the spectral rolloff of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>feature_zcr</td>
+	  <td>Computes the zero crossing rate of a short-term window</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>fftExample</td>
+	  <td>Demonstrates how to use the getDFT() function</td> 
+	  <td>3</td>
+	</tr>
+	<tr>
+	  <td>fftSNR</td>
+	  <td>Demonstrates the use of the getDFT() function using a noisy signal</td> 
+	  <td>3</td>
+	</tr>
+	<tr>
+	  <td>fileClassification</td>
+	  <td>Demonstrates the classification of an audio segment from a WAVE file (not to be confused with mtFileClassification() which performs joint segmentation-classification of an audio file</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>fld</td>
+	  <td>Finds a linear discriminant subspace using the LDA algorithm. Used for dimensionality reduction in the context of music visualization. This m-file has not be implemented by the authors, but it was taken from Mathworks File Exchange, Fisher Linear Discriminant Analysis, by Sergios Petridis</td> 
+	  <td>8</td>
+	</tr>
+	<tr>
+	  <td>getDFT</td>
+	  <td>Returns the (normalized) magnitude of the DFT of a signal.</td> 
+	  <td>3,4</td>
+	</tr>
+	<tr>
+	  <td>kNN_model_add_class</td>
+	  <td>Adds an audio class to a kNN classification setup. As the kNN classifier requires no actual training, the function it only performs a feature extraction stage for a set of WAVE files, stored in a given directory</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>kNN_model_load</td>
+	  <td>Loads a kNN classification setup, i.e., a feature matrix for each class, along with the respective normalization parameters (means and standard deviations of the features)</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>mixturepdf</td>
+	  <td>Computes the value of a pdf that is given as a mixture of normal distributions, at a given point.</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>mp3toWav</td>
+	  <td>Performs MP3 to WAVE conversion with the FFMPEG command-line tool</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>mp3toWavDIR</td>
+	  <td>Transcodes each MP3s of a given folder to the WAVE format, using the FFMPEG command-line tool</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>mtFeatureExtraction</td>
+	  <td>Computes the mid-term statistics for a set of sequences of short-term features. It returns a matrix, whose columns contain the vectors of mid-term feature statistics.</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>mtFileClassification</td>
+	  <td>Splits an audio signal into fixedsize segments and classifies each segment separately (fixed-size window segmentation)</td> 
+	  <td>5,6</td>
+	</tr>
+	<tr>
+	  <td>musicMeterTempoInduction</td>
+	  <td>Performs joint estimation of the music meter and tempo of a music recording</td> 
+	  <td>8</td>
+	</tr>
+	<tr>
+	  <td>musicThumbnailing</td>
+	  <td>Extracts pairs of thumbnails from music recordings</td> 
+	  <td>8</td>
+	</tr>
+	<tr>
+	  <td>musicVisualizationDemo</td>
+	  <td>Demonstrates three linear dimensionality reduction methods for music content visualization (random projection, PCA and LDA)</td> 
+	  <td>8</td>
+	</tr>
+	<tr>
+	  <td>musicVisualizationDemoSOM</td>
+	  <td>Demonstrates SOM-based music content visualization</td> 
+	  <td>8</td>
+	</tr>
+	<tr>
+	  <td>plotFeaturesFile</td>
+	  <td>Plots a given feature sequence that has been computed over a WAVE file</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>printPerformanceMeasures</td>
+	  <td>Prints a table of classification performance measures (confusion matrix, recall, etc) in LATEX format</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>readWavFile</td>
+	  <td>Demonstrates how to read the contents of a WAVE file, using two different modes: (a) all the contents of the WAVE file are loaded (b) blocks of data are read and each block is processed separately</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>readWavFileScript</td>
+	  <td>Generates experiments that measure the elapsed time of different WAVE file I/O approaches</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>scaledBaumWelchContObs</td>
+	  <td>Implements the scaled version of the Baum-Welch algorithm (continuous features)</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>scaledBaumWelchDisObs</td>
+	  <td>Implements the scaled version of the Baum-Welch algorithm (discrete observations)</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>scaledViterbiContObs</td>
+	  <td>Implements the Viterbi algorithm for continuous features</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>scaledViterbiDisObs</td>
+	  <td>Implements the Viterbi algorithm for discrete observations</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>scriptClassificationPerformance</td>
+	  <td>Loads a kNN classification setup (stored in a mat file) and extracts the respective classification performance measures. For the best value of k , it prints the respective confusion matrix and class-specific performance measures.</td> 
+	  <td>5</td>
+	</tr>
+	<tr>
+	  <td>segmentationCompareResults</td>
+	  <td>Visualizes two different segmentation results for the sake of comparison.</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>segmentationPlotResults</td>
+	  <td>Provides a simple user interface to view and listen to the results of a segmentation - classification procedure.</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>segmentationProbSeq</td>
+	  <td>Segments an audio stream based on the estimated posterior probabilities for each class. Implements: (a) naive merging and (b) viterbi-based probability smoothing. To be called after mtFileClassification().</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>segmentationSignalChange</td>
+	  <td>Basic unsupervised signal change segmentation (no classifier needed).</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>showHistogramFeatures</td>
+	  <td>This auxiliary function is used to plot the histograms of a particular feature for different audio classes. It has been used to generate the histograms of Chapter 4</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>silenceDetectorUtterance</td>
+	  <td>Computes the endpoints of a single speech utterance. Based on Rabiner and Schafer, Theory and Applications of Digital Speech Processing, Section 10.3.</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>silenceRemoval</td>
+	  <td>Applies a semi-supervised algorithm for detecting speech segments (removing silence) in an audio stream stored in a WAVE file.</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>smithWaterman</td>
+	  <td>Implements the Smith-Waterman algorithm for sequence alignment</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>soundOS</td>
+	  <td>An alternative to the Matlab sound() function, in case problems are encountered in Linuxbased systems</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>speakerDiarization</td>
+	  <td>Implements a simple unsupervised speaker diarization procedure.</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>stFeatureExtraction</td>
+	  <td>Breaks an audio signal to possibly overlapping short-term windows and computes sequences of audio features. It returns a matrix whose rows correspond to the extracted feature sequences</td> 
+	  <td>4</td>
+	</tr>
+	<tr>
+	  <td>stpFile</td>
+	  <td>Demonstrates the short-term processing stage of an audio signal.</td> 
+	  <td>2</td>
+	</tr>
+	<tr>
+	  <td>viterbiBestPath</td>
+	  <td>Finds the most-likely state sequence given a matrix of probability estimations. Used for smoothing segmentation results.</td> 
+	  <td>6</td>
+	</tr>
+	<tr>
+	  <td>viterbiTrainingDo</td>
+	  <td>Implements the Viterbi training scheme for the case of discrete observations</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>viterbiTrainingMultiCo</td>
+	  <td>Implements the Viterbi training scheme for the case of continuous, multidimensional features, under the assumption that the density function at each state is Gaussian</td> 
+	  <td>7</td>
+	</tr>
+	<tr>
+	  <td>viterbiTrainingMultiCoMix</td>
+	  <td>Implements the Viterbi training scheme for the case of Gaussian mixtures</td> 
+	  <td>7</td>
+	</tr>
+
+	</table>
+
+	<h2>M-files dependency graph</h1>
+	<p align = "center"><a href = "outMFiles.png" target="_blank"><img src="outMFiles.png" width="100%"></img></a></p>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
